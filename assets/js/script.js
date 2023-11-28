@@ -710,9 +710,9 @@ function checkAndClearValues() {
 	}
 }
 function calcEXP() {
-	debugger
 	let x = input.value.split('e+');
 	input.value = x[0].replace(/e\+$/, '') * (10 ** x[1]);
+	result.value = input.value;
 	double = true;
 	func = '';
 	return;
