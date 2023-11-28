@@ -98,6 +98,7 @@ calc.addEventListener('click', (e) => {
 			input.value = input.value.replace(/^00/, '0');
 			break;
 		case '1':
+			debugger;
 			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '1';
@@ -244,6 +245,7 @@ calc.addEventListener('click', (e) => {
 			break;
 		case 'abs':
 			input.value = Math.abs(input.value);
+			result.value = eval(result.value + input.value);
 			break;
 		case 'fact':
 			input.value = exp(input.value);
@@ -560,6 +562,7 @@ calc.addEventListener('click', (e) => {
 				input.value = result.value.replace(/e\+$/, '') * (10 ** input.value);
 				result.value = input.value;
 				double = true;
+				func = '';
 				return;
 			}
 			if (double) {
@@ -672,14 +675,17 @@ function exp(n) {
 }
 
 function checkAndClearValues() {
-    try {
-        let calculatedValue = eval(result.value);
-        let isInputNumber = !isNaN(input.value) && !isNaN(parseFloat(input.value));
-        if (isInputNumber && calculatedValue == input.value) {
-            input.value = '';
-            result.value = '';
-        }
-    } catch (e) {
-        console.error("Ошибка в вычислении: ", e);
-    }
+	if (+result.value) {
+		try {
+			let calculatedValue = eval(result.value);
+			let isInputNumber = !isNaN(input.value) && !isNaN(parseFloat(input.value));
+			if (isInputNumber && calculatedValue == input.value ) {
+				input.value = '';
+				result.value = '';
+			}
+		} catch (e) {
+			console.error("Ошибка в вычислении: ", e);
+		}
+	}
 }
+
