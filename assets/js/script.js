@@ -530,6 +530,7 @@ calc.addEventListener('click', (e) => {
 				}
 				result.value = input.value;
 				double = true;
+				func = '';
 				return;
 			}
 			if (func == 'logyx') {
@@ -544,6 +545,7 @@ calc.addEventListener('click', (e) => {
 				}
 				result.value = input.value;
 				double = true;
+				func = '';
 				return;
 			}
 			if (func == 'mod') {
@@ -553,6 +555,7 @@ calc.addEventListener('click', (e) => {
 				input.value = eval(result.value + input.value);
 				result.value = input.value;
 				double = true;
+				func = '';
 				return;
 			}
 			if (func == 'exp') {
