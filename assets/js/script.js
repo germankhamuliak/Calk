@@ -406,7 +406,7 @@ calc.addEventListener('click', (e) => {
 			func = 'mod';
 			break;
 		case 'exp':
-			result.value = input.value;
+			result.value = input.value + 'e+';
 			func = 'exp';
 			clearInput = true;
 			break;
@@ -552,7 +552,7 @@ calc.addEventListener('click', (e) => {
 				if (double) {
 					return;
 				}
-				input.value = result.value * (10 ** input.value);
+				input.value = result.value.replace(/e\+$/, '') * (10 ** input.value);
 				result.value = input.value;
 				double = true;
 				return;
