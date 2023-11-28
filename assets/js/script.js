@@ -3,6 +3,7 @@ const calc = document.forms['calculator'];
 const toggleBtn1 = document.querySelector('.toggleBtn1');
 const toggleBtn2 = document.querySelector('.toggleBtn2');
 const toggleBtn3 = document.querySelector('.toggleBtn3');
+const clear = document.querySelector('input[name="clear"]');
 const keyBoard2 = document.querySelector('.key-board2');
 const keyBoard3 = document.querySelector('.key-board3');
 const keyBoard4 = document.querySelector('.key-board4');
@@ -414,6 +415,10 @@ calc.addEventListener('click', (e) => {
 			input.value = input.value.slice(0, input.value.length - 1);
 			break;
 		case 'clear':
+			if (clear.value === 'CE') {
+				input.value = '0';
+				break;
+			}
 			input.value = '0';
 			result.value = '';
 			answer = '';
@@ -594,6 +599,11 @@ calc.addEventListener('click', (e) => {
 		default:
 			return;
 	}
+	if (input.value !== '0') {
+		clear.value = 'CE';
+	} else {
+		clear.value = 'C';
+	}
 	if (input.value.length > 1 && input.value[0] == 0 && input.value[1] !== '.') {
 		input.value = input.value.substr(1);
 	}
@@ -660,26 +670,6 @@ function exp(n) {
 	}
 	return result;
 }
-
-// function formatNumber(inputValue) {
-//     // Удаляем нечисловые символы и пробелы
-//     let value = inputValue.replace(/[^0-9.-]/g, '');
-
-//     // Разделяем целую и дробную части
-//     let parts = value.split('.');
-
-//     // Форматируем целую часть числа
-//     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-
-//     // Объединяем обратно целую и дробную части
-//     return parts.join('.');
-// }
-
-// // Обработчик изменения значения поля ввода
-// input.addEventListener('input', () => {
-//     let formattedValue = formatNumber(input.value);
-//     input.value = formattedValue;
-// });
 
 function checkAndClearValues() {
     try {
