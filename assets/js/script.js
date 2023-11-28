@@ -20,6 +20,7 @@ let func;
 let double = false;
 let degree = '';
 let brackets = 0;
+let expFunc = false;
 keyBoard3.addEventListener('click', (e) => {
 	if (e.target.closest('.toggleBtn2')) {
 		toggleBtn2.classList.toggle('active');
@@ -98,7 +99,7 @@ calc.addEventListener('click', (e) => {
 			input.value = input.value.replace(/^00/, '0');
 			break;
 		case '1':
-			debugger;
+			;
 			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '1';
@@ -245,7 +246,6 @@ calc.addEventListener('click', (e) => {
 			break;
 		case 'abs':
 			input.value = Math.abs(input.value);
-			result.value = eval(result.value + input.value);
 			break;
 		case 'fact':
 			input.value = exp(input.value);
@@ -409,9 +409,9 @@ calc.addEventListener('click', (e) => {
 			func = 'mod';
 			break;
 		case 'exp':
-			result.value = input.value + 'e+';
+			input.value = input.value + 'e+';
 			func = 'exp';
-			clearInput = true;
+			// clearInput = true;
 			break;
 		case 'move':
 			input.value = input.value.slice(0, input.value.length - 1);
@@ -426,6 +426,8 @@ calc.addEventListener('click', (e) => {
 			answer = '';
 			double = false;
 			degree = '';
+			func = '';
+			brackets = 0;
 			break;
 		case 'open(':
 			if (!result.value && input.value == '0') {
@@ -440,7 +442,11 @@ calc.addEventListener('click', (e) => {
 					result.value += '*(';
 				}
 			} else {
-				result.value += '(';
+				if (!clearInput) {
+					result.value += input.value + '*(';
+				} else {
+					result.value += '(';
+				}
 				input.value = 0;
 			}
 			input.value = 0;
@@ -463,6 +469,10 @@ calc.addEventListener('click', (e) => {
 			clearInput = true;
 			break;
 		case 'plus':
+			if (func == 'exp') {
+				calcEXP();
+				func = '';
+			}
 			if (result.value && brackets === 0) {
 				try {
 					result.value = eval(result.value) + '+';
@@ -476,6 +486,10 @@ calc.addEventListener('click', (e) => {
 			clearInput = true;
 			break;
 		case 'minus':
+			if (func == 'exp') {
+				calcEXP();
+				func = '';
+			}
 			if (result.value && brackets === 0) {
 				try {
 					result.value = eval(result.value) + '-';
@@ -489,6 +503,10 @@ calc.addEventListener('click', (e) => {
 			clearInput = true;
 			break;
 		case 'divide':
+			if (func == 'exp') {
+				calcEXP();
+				func = '';
+			}
 			if (result.value && brackets === 0) {
 				try {
 					result.value = eval(result.value) + '/';
@@ -506,6 +524,11 @@ calc.addEventListener('click', (e) => {
 			clearInput = true;
 			break;
 		case 'multiply':
+
+			if (func == 'exp') {
+				calcEXP();
+				func = '';
+			}
 			if (result.value && brackets === 0) {
 				try {
 					result.value = eval(result.value) + '*';
@@ -530,7 +553,7 @@ calc.addEventListener('click', (e) => {
 				}
 				result.value = input.value;
 				double = true;
-				func = '';
+				func == '';
 				return;
 			}
 			if (func == 'logyx') {
@@ -545,7 +568,7 @@ calc.addEventListener('click', (e) => {
 				}
 				result.value = input.value;
 				double = true;
-				func = '';
+				func == '';
 				return;
 			}
 			if (func == 'mod') {
@@ -555,17 +578,14 @@ calc.addEventListener('click', (e) => {
 				input.value = eval(result.value + input.value);
 				result.value = input.value;
 				double = true;
-				func = '';
+				func == '';
 				return;
 			}
 			if (func == 'exp') {
 				if (double) {
 					return;
 				}
-				input.value = result.value.replace(/e\+$/, '') * (10 ** input.value);
-				result.value = input.value;
-				double = true;
-				func = '';
+				calcEXP();
 				return;
 			}
 			if (double) {
@@ -598,6 +618,7 @@ calc.addEventListener('click', (e) => {
 					result.value += ')';
 				}
 			}
+			console.log(result.value, input.value);
 			input.value = eval(result.value);
 			double = true;
 			answer = input.value;
@@ -682,7 +703,7 @@ function checkAndClearValues() {
 		try {
 			let calculatedValue = eval(result.value);
 			let isInputNumber = !isNaN(input.value) && !isNaN(parseFloat(input.value));
-			if (isInputNumber && calculatedValue == input.value ) {
+			if (isInputNumber && calculatedValue == input.value) {
 				input.value = '';
 				result.value = '';
 			}
@@ -690,5 +711,13 @@ function checkAndClearValues() {
 			console.error("Ошибка в вычислении: ", e);
 		}
 	}
+}
+function calcEXP() {
+	let x = input.value.split('+')[1];
+	input.value = input.value.replace(/e\+$/, '') * (10 ** x);
+	// result.value += input.value;
+	double = true;
+	func = '';
+	return;
 }
 
