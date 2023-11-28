@@ -87,6 +87,7 @@ calc.addEventListener('input', (e) => {
 calc.addEventListener('click', (e) => {
 	switch (e.target.name) {
 		case '0':
+			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '0';
 			} else {
@@ -96,6 +97,7 @@ calc.addEventListener('click', (e) => {
 			input.value = input.value.replace(/^00/, '0');
 			break;
 		case '1':
+			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '1';
 			} else {
@@ -104,6 +106,7 @@ calc.addEventListener('click', (e) => {
 			clearInput = false;
 			break;
 		case '2':
+			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '2';
 			} else {
@@ -112,6 +115,7 @@ calc.addEventListener('click', (e) => {
 			clearInput = false;
 			break;
 		case '3':
+			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '3';
 			} else {
@@ -120,6 +124,7 @@ calc.addEventListener('click', (e) => {
 			clearInput = false;
 			break;
 		case '4':
+			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '4';
 			} else {
@@ -128,6 +133,7 @@ calc.addEventListener('click', (e) => {
 			clearInput = false;
 			break;
 		case '5':
+			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '5';
 			} else {
@@ -136,6 +142,7 @@ calc.addEventListener('click', (e) => {
 			clearInput = false;
 			break;
 		case '6':
+			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '6';
 			} else {
@@ -144,6 +151,7 @@ calc.addEventListener('click', (e) => {
 			clearInput = false;
 			break;
 		case '7':
+			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '7';
 			} else {
@@ -152,6 +160,7 @@ calc.addEventListener('click', (e) => {
 			clearInput = false;
 			break;
 		case '8':
+			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '8';
 			} else {
@@ -160,6 +169,7 @@ calc.addEventListener('click', (e) => {
 			clearInput = false;
 			break;
 		case '9':
+			checkAndClearValues();
 			if (!clearInput) {
 				input.value += '9';
 			} else {
@@ -670,3 +680,16 @@ function exp(n) {
 //     let formattedValue = formatNumber(input.value);
 //     input.value = formattedValue;
 // });
+
+function checkAndClearValues() {
+    try {
+        let calculatedValue = eval(result.value);
+        let isInputNumber = !isNaN(input.value) && !isNaN(parseFloat(input.value));
+        if (isInputNumber && calculatedValue == input.value) {
+            input.value = '';
+            result.value = '';
+        }
+    } catch (e) {
+        console.error("Ошибка в вычислении: ", e);
+    }
+}
