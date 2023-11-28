@@ -411,7 +411,6 @@ calc.addEventListener('click', (e) => {
 		case 'exp':
 			input.value = input.value + 'e+';
 			func = 'exp';
-			// clearInput = true;
 			break;
 		case 'move':
 			input.value = input.value.slice(0, input.value.length - 1);
@@ -524,7 +523,6 @@ calc.addEventListener('click', (e) => {
 			clearInput = true;
 			break;
 		case 'multiply':
-
 			if (func == 'exp') {
 				calcEXP();
 				func = '';
@@ -637,7 +635,6 @@ calc.addEventListener('click', (e) => {
 	if (input.value.length > 32) {
 		input.value = input.value.substr(0, 32);
 	}
-
 });
 document.addEventListener('keydown', (e) => {
 	if (e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") {
@@ -713,9 +710,9 @@ function checkAndClearValues() {
 	}
 }
 function calcEXP() {
-	let x = input.value.split('+')[1];
-	input.value = input.value.replace(/e\+$/, '') * (10 ** x);
-	// result.value += input.value;
+	debugger
+	let x = input.value.split('e+');
+	input.value = x[0].replace(/e\+$/, '') * (10 ** x[1]);
 	double = true;
 	func = '';
 	return;
