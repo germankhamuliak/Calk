@@ -551,7 +551,7 @@ calc.addEventListener('click', (e) => {
 				}
 				result.value = input.value;
 				double = true;
-				func == '';
+				func = '';
 				return;
 			}
 			if (func == 'logyx') {
@@ -566,7 +566,7 @@ calc.addEventListener('click', (e) => {
 				}
 				result.value = input.value;
 				double = true;
-				func == '';
+				func = '';
 				return;
 			}
 			if (func == 'mod') {
@@ -576,13 +576,13 @@ calc.addEventListener('click', (e) => {
 				input.value = eval(result.value + input.value);
 				result.value = input.value;
 				double = true;
-				func == '';
+				func = '';
 				return;
 			}
 			if (func == 'exp') {
-				if (double) {
-					return;
-				}
+				// if (double) {
+				// 	return;
+				// }
 				calcEXP();
 				return;
 			}
@@ -710,9 +710,9 @@ function checkAndClearValues() {
 	}
 }
 function calcEXP() {
+	debugger
 	let x = input.value.split('e+');
 	input.value = x[0].replace(/e\+$/, '') * (10 ** x[1]);
-	result.value = input.value;
 	double = true;
 	func = '';
 	return;
