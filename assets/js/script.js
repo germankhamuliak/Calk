@@ -14,6 +14,9 @@ const trigonometryBtn = document.querySelector('.trigonometry');
 const functionBtn = document.querySelector('.func');
 const result = calc.result;
 const input = calc.input;
+const gradBtn = document.querySelector('input[name="deg"]');
+const degValue = ['DEG', 'RAD', 'GRAD'];
+const changeDeg1 = changeDeg();
 let clearInput = false;
 let answer = '';
 let func;
@@ -180,6 +183,9 @@ calc.addEventListener('click', (e) => {
 			}
 			clearInput = false;
 			break;
+		case 'deg':
+			changeDeg1();
+			break;
 		case 'add-minus':
 			if (input.value[0] === '0' && input.value.length < 2) {
 				return;
@@ -203,24 +209,33 @@ calc.addEventListener('click', (e) => {
 			break;
 		case 'e':
 			input.value = Math.E;
+			clearInput = true;
+			func = 'result';
 			break;
 		case 'π':
 			input.value = Math.PI;
+			clearInput = true;
+			func = 'result';
 			break;
 		case 'pow2':
 			input.value = Math.pow(input.value, 2);
+			func = 'result';
 			break;
 		case 'x3':
 			input.value = Math.pow(input.value, 3);
+			func = 'result';
 			break;
 		case '10pow':
 			input.value = Math.pow(10, input.value);
+			func = 'result';
 			break;
 		case 'log':
 			input.value = Math.log10(input.value);
+			func = 'result';
 			break;
 		case 'sqrt':
 			input.value = Math.sqrt(input.value);
+			func = 'result';
 			break;
 		case 'logyx':
 			result.value = input.value + 'log base';
@@ -232,135 +247,151 @@ calc.addEventListener('click', (e) => {
 			break;
 		case '2powx':
 			input.value = Math.pow(2, input.value);
+			func = 'result';
 			break;
 		case 'ysqrt':
-			result.value = input.value;
-			func = 'ysqrt';
+			result.value += input.value + 'ysqrt';
 			clearInput = true;
 			break;
 		case 'ln':
 			input.value = Math.log(input.value);
+			func = 'result';
 			break;
 		case '1/x':
 			input.value = 1 / input.value;
+			func = 'result';
 			break;
 		case 'abs':
 			input.value = Math.abs(input.value);
+			func = 'result';
 			break;
 		case 'fact':
 			input.value = exp(input.value);
+			func = 'result';
 			break;
 		case 'sin':
-			input.value = Math.sin(input.value);
-			func = '';
+			input.value = Math.sin(calcSystem(Number(input.value)));
+			func = 'result';
 			break;
 		case 'cos':
-			input.value = Math.cos(input.value);
-			func = '';
+			input.value = Math.cos(calcSystem(Number(input.value)));
+			func = 'result';
 			break;
 		case 'tan':
-			input.value = Math.tan(input.value);
-			func = '';
+			input.value = Math.tan(calcSystem(Number(input.value)));
+			func = 'result';
 			break;
 		case 'cot':
-			input.value = Math.cos(input.value) / Math.sin(input.value);
-			func = '';
+			input.value = Math.cos(calcSystem(Number(input.value))) / Math.sin(calcSystem(Number(input.value)));
+			func = 'result';
 			break;
 		case 'sec':
-			input.value = 1 / Math.cos(input.value);
-			func = '';
+			input.value = 1 / Math.cos(calcSystem(Number(input.value)));
+			func = 'result';
 			break;
 		case 'csc':
-			input.value = 1 / Math.sin(input.value);
-			func = '';
+			input.value = 1 / Math.sin(calcSystem(Number(input.value)));
+			func = 'result';
 			break;
 		case 'sinh':
-			input.value = (Math.pow(Math.E, input.value) - Math.pow(Math.E, -input.value)) / 2;
-			func = '';
+			input.value = (Math.pow(Math.E, calcSystem(Number(input.value))) - Math.pow(Math.E, calcSystem(Number(-input.value)))) / 2;
+			func = 'result';
 			break;
 		case 'cosh':
-			input.value = (Math.pow(Math.E, input.value) + Math.pow(Math.E, -input.value)) / 2;
-			func = '';
+			input.value = (Math.pow(Math.E, calcSystem(Number(input.value))) + Math.pow(Math.E, calcSystem(Number(-input.value)))) / 2;
+			func = 'result';
 			break;
 		case 'tanh':
-			input.value = (Math.pow(Math.E, input.value) - Math.pow(Math.E, -input.value)) / (Math.pow(Math.E, input.value) + Math.pow(Math.E, -input.value));
-			func = '';
+			input.value = (Math.pow(Math.E, calcSystem(Number(input.value))) - Math.pow(Math.E, calcSystem(Number(-input.value)))) / (Math.pow(Math.E, calcSystem(Number(input.value))) + Math.pow(Math.E, calcSystem(Number(-input.value))));
+			func = 'result';
 			break;
 		case 'coth':
-			input.value = (Math.pow(Math.E, input.value) + Math.pow(Math.E, -input.value)) / (Math.pow(Math.E, input.value) - Math.pow(Math.E, -input.value));
-			func = '';
+			input.value = (Math.pow(Math.E, calcSystem(Number(input.value))) + Math.pow(Math.E, calcSystem(Number(-input.value)))) / (Math.pow(Math.E, calcSystem(Number(input.value))) - Math.pow(Math.E, calcSystem(Number(-input.value))));
+			func = 'result';
 			break;
 		case 'sech':
-			input.value = 2 / (Math.pow(Math.E, input.value) + Math.pow(Math.E, -input.value));
-			func = '';
+			input.value = 2 / (Math.pow(Math.E, calcSystem(Number(input.value))) + Math.pow(Math.E, calcSystem(Number(-input.value))));
+			func = 'result';
 			break;
 		case 'csch':
-			input.value = 2 / (Math.pow(Math.E, input.value) - Math.pow(Math.E, -input.value));
-			func = '';
+			input.value = 2 / (Math.pow(Math.E, calcSystem(Number(input.value))) - Math.pow(Math.E, calcSystem(Number(-input.value))));
+			func = 'result';
 			break;
 		case 'sin⁻¹':
 			if (parseFloat(input.value) > 1 || parseFloat(input.value) < -1) {
 				alert("Для sin⁻¹ значение должно быть от -1 до 1");
 				break;
 			}
-			input.value = Math.asin(parseFloat(input.value)).toString();
+			input.value = Math.asin(parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'cos⁻¹':
 			if (parseFloat(input.value) > 1 || parseFloat(input.value) < -1) {
 				alert("Для cos⁻¹ значение должно быть от -1 до 1");
 				break;
 			}
-			input.value = Math.acos(parseFloat(input.value)).toString();
+			input.value = Math.acos(parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'tan⁻¹':
-			input.value = Math.atan(parseFloat(input.value)).toString();
+			input.value = Math.atan(parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'sec⁻¹':
-			input.value = 1 / Math.cos(parseFloat(input.value)).toString();
+			input.value = 1 / Math.cos(parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'csc⁻¹':
-			input.value = 1 / Math.sin(parseFloat(input.value)).toString();
+			input.value = 1 / Math.sin(parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'cot⁻¹':
-			input.value = 1 / Math.tan(parseFloat(input.value)).toString();
+			input.value = 1 / Math.tan(parseFloat(icalcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'sinh⁻¹':
-			input.value = Math.asinh(parseFloat(input.value)).toString();
+			input.value = Math.asinh(parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'cosh⁻¹':
 			if (parseFloat(input.value) < 1) {
 				alert("Для cosh⁻¹ значение должно быть >= 1");
 				break;
 			}
-			input.value = Math.acosh(parseFloat(input.value)).toString();
+			input.value = Math.acosh(parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'tanh⁻¹':
 			if (Math.abs(parseFloat(input.value)) >= 1) {
 				alert("Для tanh⁻¹ значение должно быть меньше 1 по модулю");
 				break;
 			}
-			input.value = Math.atanh(parseFloat(input.value)).toString();
+			input.value = Math.atanh(parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'sech⁻¹':
 			if (parseFloat(input.value) <= 0 || parseFloat(input.value) > 1) {
 				alert("Для sech⁻¹ значение должно быть в интервале (0, 1]");
 				break;
 			}
-			input.value = Math.acosh(1 / parseFloat(input.value)).toString();
+			input.value = Math.acosh(1 / parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'csch⁻¹':
 			if (parseFloat(input.value) === 0) {
 				alert("Для csch⁻¹ значение не должно быть равно 0");
 				break;
 			}
-			input.value = Math.asinh(1 / parseFloat(input.value)).toString();
+			input.value = Math.asinh(1 / parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'coth⁻¹':
 			if (Math.abs(parseFloat(input.value)) <= 1) {
 				alert("Для coth⁻¹ значение должно быть больше 1 по модулю");
 				break;
 			}
-			input.value = Math.atanh(1 / parseFloat(input.value)).toString();
+			input.value = Math.atanh(1 / parseFloat(calcSystem(Number(input.value))));
+			func = 'result';
 			break;
 		case 'dms':
 			let decimalDegrees = parseFloat(input.value);
@@ -368,6 +399,7 @@ calc.addEventListener('click', (e) => {
 			let minutes = Math.trunc((decimalDegrees - degrees) * 60);
 			let seconds = ((decimalDegrees - degrees - minutes / 60) * 3600).toFixed(2);
 			input.value = `${degrees}°${minutes}'${seconds}"`;
+			func = 'result';
 			break;
 		case 'deg':
 			let dmsValue = input.value.match(/(\d+)°(\d+)'(\d+(\.\d+)?)"/);
@@ -377,17 +409,21 @@ calc.addEventListener('click', (e) => {
 			} else {
 				alert("Неверный формат DMS. Используйте формат 'XX°XX'XX\"'.");
 			}
+			func = 'result';
 			break;
 		case 'ceil':
 			input.value = Math.ceil(input.value);
 			result.value = input.value;
+			func = 'result';
 			break;
 		case 'floor':
 			input.value = Math.floor(input.value);
 			result.value = input.value;
+			func = 'result';
 			break;
 		case 'rand':
 			input.value = Math.random();
+			func = 'result';
 			break;
 		case 'ex':
 			if (double) {
@@ -417,8 +453,11 @@ calc.addEventListener('click', (e) => {
 			break;
 		case 'clear':
 			if (clear.value === 'CE') {
+				checkAndClearValues();
 				input.value = '0';
-				break;
+				if (func !== 'equal') {
+					break;
+				}
 			}
 			input.value = '0';
 			result.value = '';
@@ -429,6 +468,12 @@ calc.addEventListener('click', (e) => {
 			brackets = 0;
 			break;
 		case 'open(':
+			checkAndClearValues();
+			if (!result.value && !input.value) {
+				result.value += '(';
+				brackets++;
+				break;
+			}
 			if (!result.value && input.value == '0') {
 				result.value += '(';
 				brackets++;
@@ -540,19 +585,18 @@ calc.addEventListener('click', (e) => {
 			clearInput = true;
 			break;
 		case 'equal':
-			if (func == 'ysqrt') {
-				if (!double) {
-					degree = input.value
-				}
-				if (double) {
-					input.value = Math.pow(result.value, 1 / degree);
+			if (/ysqrt/.test(result.value)) {
+				if (/ysqrt$/.test(result.value)) {
+					result.value = result.value.replace(/ysqrt/, '**');
+					input.value = eval(result.value + 1 / input.value)
+					return;
 				} else {
-					input.value = Math.pow(result.value, 1 / input.value);
+					let arr = result.value.split(/ysqrt/);
+					let start = arr[0].split(/\D/);
+					result.value = arr[0].replace(start[start.length - 1], '') + start[start.length - 1] ** (1 / arr[1].split(/\D/)[0]) + arr[1].replace(arr[1].split(/\D/)[0], '');
+					input.value = eval(result.value + input.value);
+					return;
 				}
-				result.value = input.value;
-				double = true;
-				func = '';
-				return;
 			}
 			if (func == 'logyx') {
 				result.value = result.value.replace('log base', '');
@@ -605,21 +649,27 @@ calc.addEventListener('click', (e) => {
 				} else {
 					result.value = result.value + input.value;
 				}
-
+			}
+			if (clearInput) {
+				if (/[\+\-\\\*]$/.test(result.value)) {
+					result.value += input.value;
+				} 
 			}
 			result.value = result.value.replace('--', '+');
 			result.value = result.value.replace('^', '**');
-
 			if (brackets > 0) {
 				for (let i = brackets; i !== 0; i--) {
 					brackets--;
 					result.value += ')';
 				}
 			}
-			console.log(result.value, input.value);
+			if (func == 'result') {
+				result.value = result.value + input.value;
+			}
 			input.value = eval(result.value);
 			double = true;
 			answer = input.value;
+			func = 'equal';
 			return;
 		default:
 			return;
@@ -694,27 +744,42 @@ function exp(n) {
 	}
 	return result;
 }
-
 function checkAndClearValues() {
-	if (+result.value) {
-		try {
-			let calculatedValue = eval(result.value);
-			let isInputNumber = !isNaN(input.value) && !isNaN(parseFloat(input.value));
-			if (isInputNumber && calculatedValue == input.value) {
-				input.value = '';
-				result.value = '';
-			}
-		} catch (e) {
-			console.error("Ошибка в вычислении: ", e);
+	try {
+		let calculatedValue = eval(result.value);
+		let isInputNumber = !isNaN(input.value) && !isNaN(parseFloat(input.value));
+		if (isInputNumber && calculatedValue == input.value) {
+			input.value = '';
+			result.value = '';
 		}
+	} catch (e) {
+		return;
 	}
 }
 function calcEXP() {
-	debugger
 	let x = input.value.split('e+');
 	input.value = x[0].replace(/e\+$/, '') * (10 ** x[1]);
 	double = true;
 	func = '';
 	return;
 }
-
+function changeDeg() {
+	let current = 0;
+	return () => {
+		current++;
+		if (current > degValue.length - 1) {
+			current = 0;
+		}
+		gradBtn.value = degValue[current];
+	}
+}
+function calcSystem(number) {
+	switch (gradBtn.value) {
+		case 'DEG':
+			return number * Math.PI / 180;
+		case 'RAD':
+			return number;
+		case 'GRAD':
+			return number * 1.1 * Math.PI / 180;
+	}
+}
